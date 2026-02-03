@@ -1,7 +1,5 @@
 'use client'
 
-import Image from "next/image";
-
 import { useState, useRef, useEffect } from 'react';
 
 export default function Home() {
@@ -36,17 +34,35 @@ export default function Home() {
     setShowCelebration(true);
   };
 
-  const handleNoMouseEnter = () => {
+  const moveNoButton = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
+    
     const randomText = noButtonTexts[Math.floor(Math.random() * noButtonTexts.length)];
     setNoButtonText(randomText);
 
-    const maxX = window.innerWidth - 150;
-    const maxY = window.innerHeight - 60;
+    // Get button dimensions
+    const buttonWidth = 150;
+    const buttonHeight = 60;
     
-    const newX = Math.random() * maxX;
-    const newY = Math.random() * maxY;
+    // Calculate safe boundaries
+    const maxX = window.innerWidth - buttonWidth - 20;
+    const maxY = window.innerHeight - buttonHeight - 20;
+    
+    const newX = Math.max(10, Math.random() * maxX);
+    const newY = Math.max(10, Math.random() * maxY);
     
     setNoButtonPosition({ x: newX, y: newY });
+  };
+
+  const handleNoClick = (e: React.MouseEvent | React.TouchEvent) => {
+    moveNoButton(e);
+  };
+
+  const handleNoMouseEnter = (e: React.MouseEvent) => {
+    // Only trigger on desktop (when hover is available)
+    if (window.matchMedia('(hover: hover)').matches) {
+      moveNoButton(e);
+    }
   };
 
   return (
@@ -79,7 +95,7 @@ export default function Home() {
             Prabodh, Will you be my Valentine?
           </h2>
           
-          <div className="flex gap-8 justify-center items-center relative">
+          <div className="flex gap-8 justify-center items-center relative min-h-[80px]">
             <button
               onClick={handleYesClick}
               className="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-12 rounded-full text-2xl transform hover:scale-110 transition-all duration-200 shadow-lg"
@@ -91,14 +107,18 @@ export default function Home() {
               <button
                 ref={noButtonRef}
                 onMouseEnter={handleNoMouseEnter}
-                className="bg-red-500 text-white font-bold py-4 px-12 rounded-full text-2xl shadow-lg cursor-pointer"
+                onClick={handleNoClick}
+                onTouchStart={handleNoClick}
+                className="bg-red-500 text-white font-bold py-4 px-12 rounded-full text-2xl shadow-lg cursor-pointer touch-none select-none"
               >
                 {noButtonText}
               </button>
             ) : (
               <button
                 onMouseEnter={handleNoMouseEnter}
-                className="bg-red-500 text-white font-bold py-4 px-12 rounded-full text-2xl shadow-lg cursor-pointer fixed transition-all duration-300 ease-out"
+                onClick={handleNoClick}
+                onTouchStart={handleNoClick}
+                className="bg-red-500 text-white font-bold py-4 px-12 rounded-full text-2xl shadow-lg cursor-pointer fixed transition-all duration-300 ease-out touch-none select-none z-20"
                 style={{
                   left: `${noButtonPosition.x}px`,
                   top: `${noButtonPosition.y}px`,
