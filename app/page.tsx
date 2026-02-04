@@ -14,7 +14,7 @@ export default function Home() {
     'Really?',
     'Pakka?',
     'Sure?',
-    'Bahut marungi!',
+    'Bahut marungag!',
     'Think again!',
     'Not happening!',
     'Nope nope!',
@@ -92,7 +92,7 @@ export default function Home() {
             💝
           </h1>
           <h2 className="text-4xl md:text-6xl font-bold text-gray-800 mb-12">
-            Prabodh, Will you be my Valentine?
+            Will you be my Valentine?
           </h2>
           
           <div className="flex gap-8 justify-center items-center relative min-h-[80px]">
